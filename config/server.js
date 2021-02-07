@@ -3,6 +3,7 @@ let express = require('express')
 let consign = require('consign')
 let bodyParser = require('body-parser')
 let expressValidator = require('express-validator')
+let expressSession = require('express-session')
 
 let app = express()
 
@@ -20,6 +21,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 /* configurar o middleware express-validator */
 app.use(expressValidator());
+
+/* configurar o middleware express-session */
+app.use(expressSession({
+	secret: 'testesecretigor',
+	resave: false,
+	saveUninitialized: false 
+}));
 
 /* ---------------------------------------------------------------------------------- */
 

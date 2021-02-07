@@ -7,4 +7,9 @@ module.exports = function(application){
 		*/
 		application.app.controllers.index.index(application, req, res)
 	});
+
+	application.post('/autenticar', function(req, res){
+		/* Apresenta qual função e qual caminho realizar */
+		application.app.controllers.index.autenticar(application, req, res)
+	});
 }

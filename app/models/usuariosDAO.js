@@ -24,6 +24,18 @@ usuariosDAO.prototype.inserirUsuario = function(usuario){
     
 }
 
+usuariosDAO.prototype.autenticar = function(usuario){
+    
+    this._connection.query("SELECT * FROM dbteste.Clientes WHERE ? AND ?", usuario.usuario, usuario.senha, (error) => {
+    
+        if(error){
+            console.log(error);
+        } else{
+            console.log("Resul Encontrado");
+        }
+    })
+}
+
 /* CRIAÇÃO DA ESTRUTURA PADRÃO COM MYSQL */
 
 usuariosDAO.prototype.criarBasedeDados = function(){
