@@ -19,19 +19,26 @@ usuariosDAO.prototype.inserirUsuario = function(usuario){
     
 }
 
-usuariosDAO.prototype.autenticar = function(usuario){
+usuariosDAO.prototype.autenticar = function(usuario, req, res){
     
-    this._connection.query("SELECT * FROM dbteste.clientes WHERE usuario = ? AND senha = ?", [usuario.usuario, usuario.senha], function(error, results){
+    this._connection.query("SELECT * FROM dbteste.clientes WHERE usuario = ? AND senha = ? LIMIT 1", [usuario.usuario, usuario.senha], function(error, results){
         
         if(error){
             throw error 
-        } else{
-            console.log(results);
-        } 
+        }
+        //console.log(results);
+        
+        if(results[0] != undefined){
+            /* CRIAÇÃO DAS VARIÁVEIS DE SESSÃO */
+            req.session.autorizado = true
+            req.session.usuario = results[0].usuario
+            req.session.casa = results[0].casa
+        }        
+
+        req.session.autorizado ? res.redirect('jogo') : res.render('index', {validacao: {}})
         
     })
 
-    //SELECT * FROM dbteste.clientes WHERE `usuario` = 'teste' AND `senha` = 'teste';
 }
 
 /* CRIAÇÃO DA ESTRUTURA PADRÃO COM MYSQL */

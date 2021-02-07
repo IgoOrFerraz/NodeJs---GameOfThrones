@@ -1,5 +1,5 @@
 module.exports.index = function(application, req, res){
-	res.render('index', {validacao: {}})
+	res.render('index', {validacao: {}, msg: {}})
 }
 
 module.exports.autenticar = function(application, req, res){
@@ -19,6 +19,7 @@ module.exports.autenticar = function(application, req, res){
 	let connection = new application.config.dbConnection()
 	let usuariosDAO = new application.app.models.usuariosDAO(connection)
     
-	usuariosDAO.autenticar(dadosForm)
-	res.send("certin")
+	usuariosDAO.autenticar(dadosForm, req, res)
+	
+	//res.send("certin")
 }
