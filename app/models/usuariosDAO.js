@@ -14,42 +14,38 @@ usuariosDAO.prototype.inserirUsuario = function(usuario){
     
     this._connection.query("INSERT INTO dbteste.Clientes SET ?", usuario, (error) => {
 
-        if(error){
-            console.log("Sessão de Erros Inserir Usuário");
-            console.log(error);
-        } else{
-            console.log("Usuario inserido com Sucesso");
-        }
+        if(error) throw error
     })
     
 }
 
 usuariosDAO.prototype.autenticar = function(usuario){
     
-    this._connection.query("SELECT * FROM dbteste.Clientes WHERE ? AND ?", usuario.usuario, usuario.senha, (error) => {
-    
+    this._connection.query("SELECT * FROM dbteste.clientes WHERE usuario = ? AND senha = ?", [usuario.usuario, usuario.senha], function(error, results){
+        
         if(error){
-            console.log(error);
+            throw error 
         } else{
-            console.log("Resul Encontrado");
-        }
+            console.log(results);
+        } 
+        
     })
+
+    //SELECT * FROM dbteste.clientes WHERE `usuario` = 'teste' AND `senha` = 'teste';
 }
 
 /* CRIAÇÃO DA ESTRUTURA PADRÃO COM MYSQL */
 
 usuariosDAO.prototype.criarBasedeDados = function(){
+
     
     let sql = 'CREATE DATABASE IF NOT EXISTS dbteste'
     
     this._connection.query(sql, (error) => {
 
-        if(error){
-            console.log(error);
-        } else{
-            console.log("Realizado com Sucesso a criação da Base de Dados");
-        }
+        if(error) throw error
     })
+
 }
 
 usuariosDAO.prototype.criarTabelas = function(){
@@ -58,12 +54,9 @@ usuariosDAO.prototype.criarTabelas = function(){
     
     this._connection.query(sql, (error) => {
 
-        if(error){
-            console.log(error);
-        } else{
-            console.log("Realizado com Sucesso a criação das Tabelas");
-        }
+        if(error) throw error
     })
+
 }
 
 
