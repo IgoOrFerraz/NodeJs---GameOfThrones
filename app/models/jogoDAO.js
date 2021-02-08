@@ -4,7 +4,7 @@ function jogoDAO (connection){
 
 jogoDAO.prototype.gerarParametros = function(usuario){
 
-    console.log("Dentro do Gerar Parametros");
+    //console.log("Dentro do Gerar Parametros");
 
     /* Regra de negócios da aplicação atribui valores randomicos aos atributos temor, sabedoria, comercio e magia 
     Creio que seja uma boa aplicação se for padronizado por casa em vez por usuario, atribuindo nessa aplicação
@@ -22,8 +22,8 @@ jogoDAO.prototype.gerarParametros = function(usuario){
         magia: Math.floor(Math.random() * 1000)
     }
 
-    console.log(dados);
-    console.log("Inserindo Dados");
+    //console.log(dados);
+    //console.log("Inserindo Dados");
     
     this._connection.query("INSERT INTO dbteste.jogo SET ?", [dados], function(error){
         if(error){
@@ -31,6 +31,25 @@ jogoDAO.prototype.gerarParametros = function(usuario){
         }
     })
     
+}
+
+jogoDAO.prototype.iniciaJogo = function(req, res){
+    /* Considerações iniciais após efetuação do login */
+
+    this._connection.query("SELECT * FROM dbteste.jogo WHERE usuario = ? LIMIT 1", [req.session.usuario], function(error, results){
+        
+        if(error){
+            throw error 
+        }
+
+        //console.log(results);
+        
+        if(results[0] != undefined){
+            res.render('jogo', {img_casa: req.session.casa, jogo: results[0]})    
+        }        
+        
+        console.log(results[0]);
+    })
 }
 
 module.exports = () => jogoDAO

@@ -45,7 +45,7 @@ usuariosDAO.prototype.autenticar = function(usuario, req, res){
 
 usuariosDAO.prototype.criarBasedeDados = function(){
 
-    console.log("Dentro do Criar Base");
+    //console.log("Dentro do Criar Base");
     
     let sql = 'CREATE DATABASE IF NOT EXISTS dbteste'
     
@@ -57,7 +57,7 @@ usuariosDAO.prototype.criarBasedeDados = function(){
 
 usuariosDAO.prototype.criarTabelas = function(){
 
-    console.log("Dentro do Criar Tabelas");
+    //console.log("Dentro do Criar Tabelas");
     
     let sql_users = "CREATE TABLE IF NOT EXISTS dbteste.Clientes (nome varchar(30) NOT NULL, usuario varchar(30) NOT NULL, senha varchar(20) NOT NULL, casa varchar(10) NOT NULL, PRIMARY KEY (usuario))"
     let sql_game = "CREATE TABLE IF NOT EXISTS dbteste.Jogo (usuario varchar(30) NOT NULL, moeda int NOT NULL, suditos int NOT NULL, temor int NOT NULL, sabedoria int NOT NULL, comercio int NOT NULL, magia int NOT NULL, FOREIGN KEY (usuario) REFERENCES dbteste.clientes(usuario))"
