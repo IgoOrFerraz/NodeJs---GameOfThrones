@@ -12,9 +12,21 @@ module.exports.jogo = function(application, req, res){
 
 }
 
+/* Os renders apresentados aqui são direcionados para as views designadas no config server com os arquivos .ejs*/
+module.exports.suditos = function(application, req, res){
+	res.render('aldeoes', {validacao: {}})
+}
+
+module.exports.pergaminhos = function(application, req, res){
+	res.render('pergaminhos', {validacao: {}})
+}
+
+
+
 /* Destruindo Variáveis de Sessão */
 module.exports.sair = function(application, req, res){
 	req.session.destroy(function(error){
 		res.render('index', {validacao: {}})
 	})
 }
+
