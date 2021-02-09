@@ -17,6 +17,10 @@
 		<script>
 			$(document).ready(function(){
 				$('#btn_suditos').click(function(){
+
+					$('#msg_erros').hide()
+					$('#msg_sucesso').hide()
+
 					$.ajax({
 						url: '/suditos',
 						method: 'get',
@@ -27,6 +31,10 @@
 				})
 
 				$('#btn_pergaminhos').click(function(){
+
+					$('#msg_erros').hide()
+					$('#msg_sucesso').hide()
+					
 					$.ajax({
 						url: '/pergaminhos',
 						method: 'get',
@@ -50,6 +58,18 @@
 		</nav>
 
 	    <div class="container">
+
+			<% if(msg == 'A'){ %>
+				<div class="alert alert-danger" id="msg_erros">
+					<strong>Operação Inválida, verifique se todos os campos foram informados</strong>
+				</div>
+			<% } %>
+
+			<% if(msg == 'B'){ %>
+				<div class="alert alert-info" id="msg_sucesso">
+					<strong>Ação Realizada com Sucesso</strong>
+				</div>
+			<% } %>
 	    	
 			<div class="row">
 	    		<div class="col-sm-3 casa">

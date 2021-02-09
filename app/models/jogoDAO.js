@@ -33,7 +33,7 @@ jogoDAO.prototype.gerarParametros = function(usuario){
     
 }
 
-jogoDAO.prototype.iniciaJogo = function(req, res){
+jogoDAO.prototype.iniciaJogo = function(req, res, msg){
     /* Considerações iniciais após efetuação do login */
 
     this._connection.query("SELECT * FROM dbteste.jogo WHERE usuario = ? LIMIT 1", [req.session.usuario], function(error, results){
@@ -42,14 +42,47 @@ jogoDAO.prototype.iniciaJogo = function(req, res){
             throw error 
         }
 
+        if(results[0] != undefined){
+            res.render('jogo', {img_casa: req.session.casa, jogo: results[0], msg : msg})    
+        }        
+    })
+}
+
+jogoDAO.prototype.acao = function(dados){
+
+    console.log(dados);
+
+    let date = new Date()
+
+    let tempo = null
+
+    switch(dados.acao){
+        case 1 : tempo = 1 * 60 * 60000;
+        case 2 : tempo = 2 * 60 * 60000;
+        case 3 : tempo = 5 * 60 * 60000;
+        case 4 : tempo = 5 * 60 * 60000;
+    }
+
+    dados.acao_termina_em = date.getTime() + tempo
+
+    console.log(dados);
+
+    this._connection.query("INSERT INTO dbteste.acoes SET ?", [dados], function(error){
+        if(error){
+            throw error
+        }
+    })
+
         //console.log(results);
         
+        /*
         if(results[0] != undefined){
-            res.render('jogo', {img_casa: req.session.casa, jogo: results[0]})    
-        }        
-        
-        console.log(results[0]);
-    })
+            res.render('jogo', {img_casa: req.session.casa, jogo: results[0], comando_invalido : comando_invalido})    
+        }    
+        */    
+
+
+
 }
 
 module.exports = () => jogoDAO
