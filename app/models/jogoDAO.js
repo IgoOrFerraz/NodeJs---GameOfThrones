@@ -53,36 +53,41 @@ jogoDAO.prototype.acao = function(dados){
     console.log(dados);
 
     let date = new Date()
-
     let tempo = null
 
     switch(dados.acao){
-        case 1 : tempo = 1 * 60 * 60000;
-        case 2 : tempo = 2 * 60 * 60000;
-        case 3 : tempo = 5 * 60 * 60000;
-        case 4 : tempo = 5 * 60 * 60000;
+        case '1' : tempo = 1 * 60 * 60000; break;
+        case '2' : tempo = 2 * 60 * 60000; break;
+        case '3' : tempo = 5 * 60 * 60000; break;
+        case '4' : tempo = 5 * 60 * 60000; break;
     }
 
     dados.acao_termina_em = date.getTime() + tempo
-
-    console.log(dados);
-
+    
     this._connection.query("INSERT INTO dbteste.acoes SET ?", [dados], function(error){
         if(error){
             throw error
         }
     })
+}
 
-        //console.log(results);
+jogoDAO.prototype.getAcoes = function(req, res){
+    
+    console.log("Entrando no GETACOES");
+
+    let date  = new Date()
+    let momento_atual = date.getTime()
+     
+    this._connection.query("SELECT * FROM dbteste.acoes WHERE usuario = ? AND acao_termina_em > ?", [req.session.usuario, momento_atual], function(error, results){
         
-        /*
-        if(results[0] != undefined){
-            res.render('jogo', {img_casa: req.session.casa, jogo: results[0], comando_invalido : comando_invalido})    
-        }    
-        */    
+        if(error){
+            throw error 
+        }
 
+        res.render('pergaminhos', {acoes : results})
+        console.log(results)  
 
-
+    })
 }
 
 module.exports = () => jogoDAO

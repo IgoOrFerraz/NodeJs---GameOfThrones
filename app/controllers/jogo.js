@@ -35,7 +35,10 @@ module.exports.pergaminhos = function(application, req, res){
 		return
 	}
 
-	res.render('pergaminhos', {validacao: {}})
+	let connection = new application.config.dbConnection()
+	let jogoDAO = new application.app.models.jogoDAO(connection)
+
+	jogoDAO.getAcoes(req, res)
 }
 
 module.exports.ordenar_acao_suditos = function(application, req, res){
