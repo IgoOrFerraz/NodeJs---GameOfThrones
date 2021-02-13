@@ -98,6 +98,18 @@
 					<strong>Ação Finalizada</strong>
 				</div>
 			<% } %>
+
+			<% if(msg == 'D'){ %>
+				<div class="alert alert-danger" id="msg_erros">
+					<strong>Não foi Possível realizar essa Ordem</strong>
+				</div>
+			<% } %>
+
+			<% if(msg == 'E'){ %>
+				<div class="alert alert-success" id="msg_sucesso">
+					<strong>Ação revogada com sucesso</strong>
+				</div>
+			<% } %>
 	    	
 			<div class="row">
 	    		<div class="col-sm-3 casa">

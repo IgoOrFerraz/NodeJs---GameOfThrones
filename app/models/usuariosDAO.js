@@ -61,7 +61,7 @@ usuariosDAO.prototype.criarTabelas = function(){
     
     let sql_users = "CREATE TABLE IF NOT EXISTS dbteste.Clientes (nome varchar(30) NOT NULL, usuario varchar(30) NOT NULL, senha varchar(20) NOT NULL, casa varchar(10) NOT NULL, PRIMARY KEY (usuario))"
     let sql_game = "CREATE TABLE IF NOT EXISTS dbteste.Jogo (usuario varchar(30) NOT NULL, moeda int NOT NULL, suditos int NOT NULL, temor int NOT NULL, sabedoria int NOT NULL, comercio int NOT NULL, magia int NOT NULL, FOREIGN KEY (usuario) REFERENCES dbteste.clientes(usuario))"
-    let sql_acao = "CREATE TABLE IF NOT EXISTS dbteste.Acoes (usuario varchar(30) NOT NULL, acao int NOT NULL, quantidade int NOT NULL, acao_termina_em bigint NOT NULL, FOREIGN KEY (usuario) REFERENCES dbteste.clientes(usuario))"
+    let sql_acao = "CREATE TABLE IF NOT EXISTS dbteste.Acoes (id int AUTO_INCREMENT NOT NULL, usuario varchar(30) NOT NULL, acao int NOT NULL, quantidade int NOT NULL, acao_termina_em bigint NOT NULL, PRIMARY KEY (id), FOREIGN KEY (usuario) REFERENCES dbteste.clientes(usuario))"
 
     this._connection.query(sql_users, (error) => {
         if(error) throw error

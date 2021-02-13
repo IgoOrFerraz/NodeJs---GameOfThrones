@@ -48,12 +48,14 @@ jogoDAO.prototype.iniciaJogo = function(req, res, msg){
     })
 }
 
-jogoDAO.prototype.acao = function(dados){
+jogoDAO.prototype.acao = function(dados, res){
 
     console.log(dados);
 
     let date = new Date()
     let tempo = null
+    let moedas = null
+    let suditos = null
 
     switch(dados.acao){
         case '1' : tempo = 1 * 60 * 60000; break;
@@ -63,18 +65,40 @@ jogoDAO.prototype.acao = function(dados){
     }
 
     dados.acao_termina_em = date.getTime() + tempo
-    
-    this._connection.query("INSERT INTO dbteste.acoes SET ?", [dados], function(error){
+
+    this._connection.query("SELECT moeda, suditos from dbteste.jogo WHERE usuario = ?", [dados.usuario], function(error, result){
         if(error){
-            throw error
+            console.log(error);
+        }
+        
+        switch(dados.acao){
+            case '1' : moedas = -2 * dados.quantidade; break;
+            case '2' : moedas = -3 * dados.quantidade; break;
+            case '3' : moedas = -1 * dados.quantidade; break;
+            case '4' : moedas = -1 * dados.quantidade; break;
+        }
+
+        moedas = parseInt(result[0]['moeda']) + moedas
+        suditos = parseInt(result[0]['suditos']) - dados.quantidade
+
+        if(moedas >= 0){
+            this._connection.query("UPDATE dbteste.jogo SET moeda = ?, suditos = ? WHERE usuario = ?", [moedas, suditos, dados.usuario], function(error){
+                if(error){
+                    throw error
+                } else{
+                    this._connection.query("INSERT INTO dbteste.acoes SET ?", [dados], (error) => {if(error) throw error})
+                    res.redirect('jogo?msg=B')
+                }
+            })
+        } else{
+            /* Exibir que não foi possível realizar a execução da tarefa */
+            res.redirect('jogo?msg=D')
         }
     })
 }
 
 jogoDAO.prototype.getAcoes = function(req, res){
     
-    console.log("Entrando no GETACOES");
-
     let date  = new Date()
     let momento_atual = date.getTime()
      
@@ -87,6 +111,18 @@ jogoDAO.prototype.getAcoes = function(req, res){
         res.render('pergaminhos', {acoes : results})
         console.log(results)  
 
+    })
+}
+
+jogoDAO.prototype.revogar_acao = function(req, res, id){
+   
+    this._connection.query("DELETE from dbteste.acoes WHERE id = ? AND usuario = ?", [id, req.session.usuario], function(error, results){
+        
+        if(error){
+            throw error 
+        } else{
+            res.redirect('jogo?msg=E')
+        }
     })
 }
 
